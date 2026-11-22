@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en-NZ">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101915">
+  <title>LifeSnap | Action inbox</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/icon-192.png">
+  <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="stylesheet" href="/style.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="top"><div class="top-inner">
+    <a class="brand" href="#inbox"><img src="/icon-192.png" width="34" height="34" alt="">LifeSnap<span>.</span></a>
+    <nav aria-label="Main navigation"><a href="#inbox" id="nav-inbox">Inbox</a><a href="#calendar" id="nav-calendar">Calendar</a></nav>
+    <div class="header-actions"><button class="icon-button" id="theme" aria-label="Switch to light mode"><span data-icon="sun"></span></button><button class="secondary" id="account">Log in</button></div>
+  </div></header>
+  <main>
+    <section id="inbox" aria-labelledby="inbox-title">
+      <div class="hero">
+        <div class="hero-content">
+          <p class="eyebrow"><span></span> CAPTURE INBOX</p>
+          <h1 id="inbox-title">Your day,<br><em>in focus.</em></h1>
+          <p class="hero-copy">Capture what matters. Turn screenshots and photos into a plan for your day.</p>
+          <div class="buttons">
+            <button class="primary" id="upload"><span data-icon="upload"></span> Upload images</button>
+            <button class="secondary" id="camera"><span data-icon="camera"></span> Take photo</button>
+          </div>
+        </div>
+        <div class="art" aria-hidden="true">
+          <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+          <div class="paper paper-back"><span>📅</span><b>Upcoming</b><i></i><i></i><i></i></div>
+          <div class="paper paper-front"><div class="paper-icon" data-icon="check"></div><small>REMINDER</small><b>Pick up prints</b><p>Friday · 3:30 pm</p><i></i></div>
+          <div class="spark">✦</div><div class="small-spark">✧</div>
+        </div>
+        <input id="files" type="file" accept="image/png,image/jpeg,image/webp,image/heic,image/heif,.heic,.heif" multiple hidden>
+        <input id="photo" type="file" accept="image/*" capture="environment" hidden>
+      </div>
+      <div class="hero-foot"><span><span data-icon="image"></span> PNG, JPEG, WebP or HEIC</span><span id="ai-status"></span></div>
+      <button class="scan-summary" id="scan-summary" hidden>
+        <span class="summary-icon" data-icon="image"></span>
+        <span><strong>Scan overview</strong><span id="summary-status"></span></span>
+        <span class="summary-open">Open</span><progress id="summary-meter" aria-label="Image scan progress" hidden></progress>
+      </button>
+      <section class="inbox-body">
+        <div class="section-head"><div><h2>Your actions</h2><p id="counts">Keep track of what needs doing.</p></div><button class="primary" id="add"><span data-icon="plus"></span> New action</button></div>
+        <div class="filters">
+          <div class="tabs" aria-label="Filter by status"><button data-filter="Open" aria-pressed="true">Open</button><button data-filter="Completed" aria-pressed="false">Completed</button><button data-filter="All" aria-pressed="false">All</button></div>
+          <div class="filter-fields"><label class="search"><span data-icon="search"></span><input id="search" type="search" placeholder="Search actions" aria-label="Search actions"></label>
+          <select id="category" aria-label="Filter by category"><option value="">All categories</option></select></div>
+        </div>
+        <div id="actions"></div>
+      </section>
+    </section>
+    <section id="calendar" hidden aria-labelledby="calendar-title">
+      <div class="section-head calendar-head"><div><p class="eyebrow">LIFESNAP PLANNER</p><h1 id="calendar-title">Calendar<span>.</span></h1><p>See the dates you’ve saved from your screenshots.</p></div><button class="primary" id="export-all"><span data-icon="download"></span> Export ICS</button></div>
+      <div class="panel calendar-panel">
+        <div class="section-head"><h2 id="month"></h2><div class="buttons"><button class="secondary" id="prev" aria-label="Previous month">‹</button><button class="secondary" id="today">Today</button><button class="secondary" id="next" aria-label="Next month">›</button></div></div>
+        <div class="calendar-grid" id="calendar-grid" aria-label="Month view"></div>
+      </div>
+      <div class="section-head agenda-title"><h2 id="agenda-title">Month agenda</h2><button class="secondary" id="add-date"><span data-icon="plus"></span> Add action</button></div>
+      <div id="agenda"></div>
+    </section>
+  </main>
+  <footer><span>LifeSnap</span><span id="storage-label">Guest inbox · Saved on this device</span></footer>
+  <div id="notice" role="status" aria-live="polite" popover="manual"></div>
+  <dialog id="scan-dialog" aria-labelledby="scan-title">
+    <div class="scan-shell">
+      <div class="scan-top"><div><h2 id="scan-title">Scan overview</h2><p id="scan-state" role="status"></p></div><button class="secondary" id="close-scan">Close <span aria-hidden="true">×</span></button></div>
+      <div class="scan-progress-track" id="scan-progress-track" hidden><progress id="scan-meter" aria-label="Image scan progress"></progress><span id="scan-percent"></span></div>
+      <p class="warning" id="photo-error" role="status" hidden></p>
+      <input id="retake" type="file" accept="image/*" capture="environment" hidden>
+      <section class="panel" id="queue-panel" hidden>
+        <div class="section-head"><div><h2>Ready to review</h2><p>Preview your images before scanning. QR destinations are never opened.</p></div><button class="primary" id="analyse">Analyse images</button></div>
+        <label class="qr-only"><input type="checkbox" id="qr-only"> QR only · Keep images off Gemini</label><p id="scan-progress" role="status"></p><div class="queue" id="queue"></div>
+      </section>
+      <section class="panel" id="review-panel" hidden>
+        <div class="section-head"><div><h2>Review suggestions</h2><p>Check details before adding them to your inbox.</p></div><button class="secondary" id="save-review">Save selected</button></div>
+        <div id="review"></div>
+      </section>
+      <section class="panel" id="qr-panel" hidden>
+        <h2>QR code details</h2>
+        <p class="qr-explainer">Decoded from the image. Addresses are shown as text and were never opened.</p>
+        <div id="qr-results"></div>
+      </section>
+    </div>
+  </dialog>
+  <dialog id="auth-dialog" aria-labelledby="auth-title">
+    <form id="auth-form">
+      <div class="section-head"><h2 id="auth-title">Log in</h2><button type="button" class="icon-button" id="close-auth" aria-label="Close account">×</button></div>
+      <p id="auth-detail"></p>
+      <div class="auth-tabs tabs" id="auth-tabs"><button type="button" id="auth-login" aria-pressed="true">Log in</button><button type="button" id="auth-signup" aria-pressed="false">Sign up</button></div>
+      <button class="secondary" type="button" id="auth-google"><span class="provider-mark" aria-hidden="true">G</span> Continue with Google</button>
+      <label id="auth-email-label">Email<input id="auth-email" type="email" autocomplete="email" required></label>
+      <label id="auth-password-label">Password<input id="auth-password" type="password" autocomplete="current-password" minlength="6" required></label>
+      <p id="auth-message" role="status"></p>
+      <div class="dialog-actions"><button type="button" class="secondary" id="auth-import" hidden>Copy guest actions</button><button type="button" class="secondary" id="auth-signout" hidden>Log out</button><button class="primary" id="auth-submit">Log in</button></div>
+    </form>
+  </dialog>
+  <dialog id="editor">
+    <form id="action-form">
+      <div class="section-head"><h2 id="editor-title">New action</h2><button type="button" class="icon-button" id="close-editor" aria-label="Close editor">×</button></div>
+      <label>Title<input name="title" required maxlength="120"></label>
+      <div class="form-row"><label>Category<select name="category"></select></label><label>Priority<select name="priority"></select></label></div>
+      <div class="form-row"><label>Date<input type="date" name="date"></label><label>Time<input type="time" name="time"></label></div>
+      <label>Notes<textarea name="description" rows="3" maxlength="1500"></textarea></label>
+      <label>Next step<input name="next" maxlength="240"></label>
+      <p id="uncertainty" class="warning" hidden></p>
+      <details id="source" hidden><summary>View source image</summary><img alt="Source for this action"></details>
+      <details id="web-lookup">
+        <summary>Find out more</summary>
+        <p>Ask Gemini for a quick explanation, or search the web for cited sources. Only your question is sent.</p>
+        <label>Question<input id="web-question" maxlength="280" placeholder="e.g. Where is Auckland Central Library?"></label>
+        <div class="buttons lookup-actions"><button type="button" class="primary" id="ask-gemini">Ask Gemini</button><button type="button" class="secondary" id="web-search">Search web</button></div>
+        <div id="web-result" aria-live="polite"></div>
+      </details>
+      <div class="dialog-actions"><button type="button" class="secondary danger" id="delete">Delete</button><button type="button" class="secondary" id="export-one">Export ICS</button><button class="primary" type="submit">Save action</button></div>
+    </form>
+  </dialog>
+  <dialog id="confirm-delete">
+    <form method="dialog">
+      <h2>Delete this action?</h2><p>This removes it from your inbox and calendar.</p>
+      <div class="dialog-actions"><button class="secondary" value="cancel" autofocus>Cancel</button><button class="primary" value="delete">Delete action</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
