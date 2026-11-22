@@ -2,6 +2,22 @@
 
 LifeSnap turns screenshots and camera photos into editable actions. It includes an inbox with search, category and completion filters, a monthly calendar and agenda, and individual or bulk calendar downloads.
 
+## Screenshots
+
+The desktop app is shown in dark mode with LifeSnap’s built-in sample actions.
+
+### Inbox
+
+Upload screenshots or photos, then search, filter, and edit the actions you save.
+
+![LifeSnap inbox with photo upload controls, search and category filters, and three sample actions](docs/screenshots/inbox.png)
+
+### Calendar
+
+See dated actions in the monthly calendar and agenda, and export them to an ICS file.
+
+![LifeSnap monthly calendar and agenda showing three scheduled sample actions](docs/screenshots/calendar.png)
+
 ## Run locally
 
 1. Install [Node.js](https://nodejs.org/) 22 or newer.
